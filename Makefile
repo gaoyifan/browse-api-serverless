@@ -12,7 +12,7 @@ artifacts/puppeteer.zip: %.zip: package.json package-lock.json
 artifacts/python.zip: %.zip: requirements.txt
 	rm -rf $@ $*
 	mkdir -p $*
-	python3 -m venv $*/python
+	python -m venv $*/python
 	$*/python/bin/pip install -r $<
 	cd $* && zip -r ../$(@F) .
 
