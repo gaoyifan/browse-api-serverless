@@ -20,7 +20,7 @@ functions:
   browse-text:
     runtime: nodejs18.x
     handler: browse-text.handler
-    memorySize: 4096
+    memorySize: 3008
     timeout: 60
     ephemeralStorageSize: 10240
     url: true
@@ -31,7 +31,7 @@ functions:
   github:
     runtime: python3.9
     handler: github.handler
-    memorySize: 4096
+    memorySize: 3008
     timeout: 60
     ephemeralStorageSize: 10240
     url: true
@@ -42,7 +42,7 @@ functions:
   pdf:
     runtime: python3.9
     handler: pdf.handler
-    memorySize: 4096
+    memorySize: 3008
     timeout: 60
     ephemeralStorageSize: 10240
     url: true
@@ -53,7 +53,7 @@ functions:
   youtube:
     runtime: python3.9
     handler: youtube.handler
-    memorySize: 4096
+    memorySize: 3008
     timeout: 60
     ephemeralStorageSize: 10240
     url: true
