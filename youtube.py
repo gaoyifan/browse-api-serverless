@@ -1,5 +1,9 @@
+import base64
 import json
+import re
 import tempfile
+import traceback
+import urllib.parse
 import yt_dlp
 
 max_result_length = 6291556
@@ -122,5 +126,33 @@ def youtube(url, log=None):
         result['data']['transcript'] = transcript[:left]
     return result
 
+
 def handler(event, context):
-    return youtube(json.loads(event['body'])['url'], {'event': event, 'context': repr(context)})
+    content_type = event['headers'].get('content-type', '')
+
+    if content_type == 'application/json':
+        body = json.loads(event['body'])
+    elif content_type == 'application/x-www-form-urlencoded':
+        if event['isBase64Encoded']:
+            body_str = base64.b64decode(event['body']).decode('utf-8')
+        else:
+            body_str = event['body']
+        body = urllib.parse.parse_qs(body_str)
+    else:
+        return {
+            'statusCode': 400,
+            'body': 'Unsupported content type'
+        }
+
+    # Extract URL from the body.
+    # The exact key used to extract the URL might vary depending on the request structure.
+    url = body.get('url')
+    if not url:
+        return {
+            'statusCode': 400,
+            'body': 'URL not found in the request'
+        }
+    elif isinstance(url, list):
+        url = url[0]
+
+    return youtube(url, {'event': event, 'context': repr(context)})
